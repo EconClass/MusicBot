@@ -17,7 +17,7 @@ import (
    in the Slack API UI
 */
 const helpMessage = `*COMMANDS:*
-"@spots *Query*"
+"@LyricBot *Query*"
 >*Query* MUST BE the name of an artist, album, playlist or track.`
 
 //CreateSlackClient sets up the slack RTM (real-timemessaging) client library,
