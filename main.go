@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/EconClass/Spots/gospots"
+	"github.com/EconClass/MusicBot/slackstuff"
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -18,6 +18,6 @@ func main() {
 // slackIt is a function that initializes the Slackbot.
 func slackIt() {
 	botToken := os.Getenv("BOT_OAUTH_ACCESS_TOKEN")
-	slackClient := gospots.CreateSlackClient(botToken)
-	gospots.RespondToEvents(slackClient)
+	slackClient := slackstuff.CreateSlackClient(botToken)
+	slackstuff.RespondToEvents(slackClient)
 }

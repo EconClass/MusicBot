@@ -1,4 +1,4 @@
-package gospots
+package musicbot
 
 import (
 	"encoding/json"
@@ -6,11 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
-
-	// "encoding/json"
-	"github.com/zmb3/spotify"
 
 	"github.com/nlopes/slack"
 )
@@ -23,9 +19,6 @@ import (
 const helpMessage = `*COMMANDS:*
 "@spots *Query*"
 >*Query* MUST BE the name of an artist, album, playlist or track.`
-
-var clientID = os.Getenv("SPOTIFY_ID")
-var secretKey = os.Getenv("SPOTIFY_SECRET")
 
 //CreateSlackClient sets up the slack RTM (real-timemessaging) client library,
 //initiating the socket connection and returning the client.
@@ -76,23 +69,11 @@ func sendHelp(slackClient *slack.RTM, message, slackChannel string) {
 	if strings.ToLower(message) != "help" {
 		return
 	}
-	requestArtist("")
+
 	slackClient.SendMessage(slackClient.NewOutgoingMessage(helpMessage, slackChannel))
 }
 
-func requestArtist(redirectURL string) {
-	if redirectURL == "" {
-		redirectURL = "https://api.spotify.com/v1/albums?ids=41MnTivkwTO3UUJ8DrqEJJ%2C6JWc4iAiJ9FjyK0B59ABb4%2C6UXCm6bOO4gFlDQZV5yL37"
-	}
-	auth := spotify.NewAuthenticator(redirectURL, spotify.ScopeUserReadPrivate)
-	auth.SetAuthInfo(clientID, secretKey)
-	fmt.Println(auth)
-}
-
-// type Cats struct {
-// 	All []Cat `json:"all"`
-// }
-
+//Cat does stuff
 type Cat struct {
 	Text string `json:"text"`
 }

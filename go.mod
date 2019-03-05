@@ -1,6 +1,6 @@
 // +heroku goVersion go1.11
 
-module github.com/EconClass/Spots
+module github.com/EconClass/MusicBot
 
 require (
 	github.com/gorilla/websocket v1.4.0 // indirect
