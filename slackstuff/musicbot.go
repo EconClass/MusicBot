@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/nlopes/slack"
@@ -42,24 +43,15 @@ func RespondToEvents(slackClient *slack.RTM) {
 			}
 			message := strings.Replace(ev.Msg.Text, botTagString, "", -1)
 
-			// TODO: Make your bot do more than respond to a help command. See notes below.
-			// Make changes below this line and add additional funcs to support your bot's functionality.
-			// sendHelp is provided as a simple example. Your team may want to call a free external API
-			// in a function called sendResponse that you'd create below the definition of sendHelp,
-			// and call in this context to ensure execution when the bot receives an event.
-
-			// START SLACKBOT CUSTOM CODE
-			// ===============================================================
 			switch {
 			case message == "help":
 				sendHelp(slackClient, message, ev.Channel)
-			default:
+			case message == "cats":
 				sendCats(slackClient, message, ev.Channel)
+			default:
+				sendResponse(slackClient, message, ev.Channel)
 			}
-			// ===============================================================
-			// END SLACKBOT CUSTOM CODE
 		default:
-
 		}
 	}
 }
@@ -93,6 +85,8 @@ func sendCats(slackClient *slack.RTM, message, slackChannel string) {
 		log.Fatal(getErr)
 	}
 
+	defer res.Body.Close()
+
 	body, readErr := ioutil.ReadAll(res.Body)
 	if readErr != nil {
 		log.Fatal(readErr)
@@ -108,17 +102,55 @@ func sendCats(slackClient *slack.RTM, message, slackChannel string) {
 	slackClient.SendMessage(slackClient.NewOutgoingMessage(cat.Text, slackChannel))
 }
 
+type Lyrics struct {
+	LyricsText string `json:"lyrics_body"`
+}
+
+type LyricsObj struct {
+	LyrObj Lyrics `json:"lyrics"`
+}
+
+type MusixBody struct {
+	MessageBody LyricsObj `json:"body"`
+}
+
+type Musix struct {
+	Message MusixBody `json:"message"`
+}
+
 // sendResponse is NOT unimplemented --- write code in the function body to complete!
 func sendResponse(slackClient *slack.RTM, message, slackChannel string) {
+	musicKey := os.Getenv("KEY")
 	command := strings.ToLower(message)
+	baseURL := "https://api.musixmatch.com/ws/1.1/matcher.lyrics.get?format=json&callback=callback&q_track="
+	url := baseURL + command + "&apikey=" + musicKey
+	client := http.Client{}
 
-	// START SLACKBOT CUSTOM CODE
-	// ===============================================================
-	// TODO:
-	//      1. Implement sendResponse for one or more of your custom Slackbot commands.
-	//         You could call an external API here, or create your own string response. Anything goes!
-	//      2. STRETCH: Write a goroutine that calls an external API based on the data received in this function.
-	// ===============================================================
-	// END SLACKBOT CUSTOM CODE
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, getErr := client.Do(req)
+	if err != nil {
+		log.Fatal(getErr)
+	}
+
+	body, readErr := ioutil.ReadAll(res.Body)
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
+	musix := &Musix{}
+	jsonErr := json.Unmarshal([]byte(body), &musix)
+	if jsonErr != nil {
+		log.Fatal(jsonErr)
+	}
+
+	fmt.Printf("%+v\n", musix)
+	// bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	// bodyString := string(bodyBytes)
+
 	fmt.Println("[RECEIVED] sendResponse:", command)
+	slackClient.SendMessage(slackClient.NewOutgoingMessage(musix.Message.MessageBody.LyrObj.LyricsText, slackChannel))
 }
