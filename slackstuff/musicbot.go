@@ -30,6 +30,26 @@ func CreateSlackClient(apiKey string) *slack.RTM {
 	return rtm
 }
 
+//Lyrics is used to model the json respose from Musixmatch API
+type Lyrics struct {
+	LyricsText string `json:"lyrics_body"`
+}
+
+//LyricsObj is used to model the json respose from Musixmatch API
+type LyricsObj struct {
+	LyrObj Lyrics `json:"lyrics"`
+}
+
+//MusixBody is used to model the json respose from Musixmatch API
+type MusixBody struct {
+	MessageBody LyricsObj `json:"body"`
+}
+
+//Musix is used to model the json respose from Musixmatch API
+type Musix struct {
+	Message MusixBody `json:"message"`
+}
+
 //RespondToEvents waits for messages on the Slack client's incomingEvents channel,
 //and sends a response when it detects the bot has been tagged in a message with @<botTag>.
 func RespondToEvents(slackClient *slack.RTM) {
@@ -102,26 +122,12 @@ func sendCats(slackClient *slack.RTM, message, slackChannel string) {
 	slackClient.SendMessage(slackClient.NewOutgoingMessage(cat.Text, slackChannel))
 }
 
-type Lyrics struct {
-	LyricsText string `json:"lyrics_body"`
-}
-
-type LyricsObj struct {
-	LyrObj Lyrics `json:"lyrics"`
-}
-
-type MusixBody struct {
-	MessageBody LyricsObj `json:"body"`
-}
-
-type Musix struct {
-	Message MusixBody `json:"message"`
-}
-
 // sendResponse is NOT unimplemented --- write code in the function body to complete!
 func sendResponse(slackClient *slack.RTM, message, slackChannel string) {
 	musicKey := os.Getenv("KEY")
 	command := strings.ToLower(message)
+	command = strings.Replace(command, " ", "%20", -1)
+	fmt.Println(command)
 	baseURL := "https://api.musixmatch.com/ws/1.1/matcher.lyrics.get?format=json&callback=callback&q_track="
 	url := baseURL + command + "&apikey=" + musicKey
 	client := http.Client{}
