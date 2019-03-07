@@ -19,7 +19,7 @@ import (
 */
 const helpMessage = `*COMMANDS:*
 "@LyricBot *Query*"
->*Query* MUST BE the name of an artist, album, playlist or track.`
+>*Query* MUST BE the name of a track.`
 
 //CreateSlackClient sets up the slack RTM (real-timemessaging) client library,
 //initiating the socket connection and returning the client.
@@ -66,8 +66,6 @@ func RespondToEvents(slackClient *slack.RTM) {
 			switch {
 			case message == "help":
 				sendHelp(slackClient, message, ev.Channel)
-			case message == "cats":
-				sendCats(slackClient, message, ev.Channel)
 			default:
 				sendResponse(slackClient, message, ev.Channel)
 			}
@@ -86,41 +84,41 @@ func sendHelp(slackClient *slack.RTM, message, slackChannel string) {
 }
 
 //Cat does stuff
-type Cat struct {
-	Text string `json:"text"`
-}
+// type Cat struct {
+// 	Text string `json:"text"`
+// }
 
-func sendCats(slackClient *slack.RTM, message, slackChannel string) {
-	command := strings.ToLower(message)
-	url := "https://cat-fact.herokuapp.com/facts/random"
-	client := http.Client{}
+// func sendCats(slackClient *slack.RTM, message, slackChannel string) {
+// 	command := strings.ToLower(message)
+// 	url := "https://cat-fact.herokuapp.com/facts/random"
+// 	client := http.Client{}
 
-	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+// 	req, err := http.NewRequest(http.MethodGet, url, nil)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
 
-	res, getErr := client.Do(req)
-	if err != nil {
-		log.Fatal(getErr)
-	}
+// 	res, getErr := client.Do(req)
+// 	if err != nil {
+// 		log.Fatal(getErr)
+// 	}
 
-	defer res.Body.Close()
+// 	defer res.Body.Close()
 
-	body, readErr := ioutil.ReadAll(res.Body)
-	if readErr != nil {
-		log.Fatal(readErr)
-	}
+// 	body, readErr := ioutil.ReadAll(res.Body)
+// 	if readErr != nil {
+// 		log.Fatal(readErr)
+// 	}
 
-	cat := &Cat{}
-	json.Unmarshal([]byte(body), &cat)
-	fmt.Printf("%+v\n", cat)
-	// bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	// bodyString := string(bodyBytes)
+// 	cat := &Cat{}
+// 	json.Unmarshal([]byte(body), &cat)
+// 	fmt.Printf("%+v\n", cat)
+// 	// bodyBytes, _ := ioutil.ReadAll(resp.Body)
+// 	// bodyString := string(bodyBytes)
 
-	fmt.Println("[RECEIVED] sendCats:", command)
-	slackClient.SendMessage(slackClient.NewOutgoingMessage(cat.Text, slackChannel))
-}
+// 	fmt.Println("[RECEIVED] sendCats:", command)
+// 	slackClient.SendMessage(slackClient.NewOutgoingMessage(cat.Text, slackChannel))
+// }
 
 // sendResponse is NOT unimplemented --- write code in the function body to complete!
 func sendResponse(slackClient *slack.RTM, message, slackChannel string) {
@@ -153,9 +151,7 @@ func sendResponse(slackClient *slack.RTM, message, slackChannel string) {
 		log.Fatal(jsonErr)
 	}
 
-	fmt.Printf("%+v\n", musix)
-	// bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	// bodyString := string(bodyBytes)
+	// fmt.Printf("%+v\n", musix)
 
 	fmt.Println("[RECEIVED] sendResponse:", command)
 	slackClient.SendMessage(slackClient.NewOutgoingMessage(musix.Message.MessageBody.LyrObj.LyricsText, slackChannel))
