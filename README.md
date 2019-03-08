@@ -68,3 +68,4 @@ I'm starting with the man in the mirror
 ## Installation
 
 Since LyricBot alredy lives inside the product college workspace, all you need to do is invite it to the channel you want.
+For more information click <a href="https://get.slack.help/hc/en-us/articles/201980108-Invite-members-to-a-channel" target="_blank">here.</a>
