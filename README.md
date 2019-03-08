@@ -1,5 +1,6 @@
 # LyricBot
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c2469221bc994c748957b053db5bec43)](https://app.codacy.com/app/EconClass/MusicBot?utm_source=github.com&utm_medium=referral&utm_content=EconClass/MusicBot&utm_campaign=Badge_Grade_Dashboard)
 [![Go Report Card](https://goreportcard.com/badge/github.com/EconClass/MusicBot)](https://goreportcard.com/report/github.com/EconClass/MusicBot)
 
 **DISCLAIMER:** This SlackBot is only available for the Product College workspace.
