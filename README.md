@@ -1,6 +1,6 @@
 # LyricBot
 
-[![Go Report Card](https://goreportcard.com/report/github.com/EconClass/MusicBot)](https://goreportcard.com/report/github.com/EconClass/MusicBot)
+[![Go Report Card](https://goreportcard.com/badge/github.com/EconClass/MusicBot)](https://goreportcard.com/report/github.com/EconClass/MusicBot)
 
 DISCLAIMER: This SlackBot is only available for the Product College workspace.
 
