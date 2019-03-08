@@ -12,11 +12,6 @@ import (
 	"github.com/nlopes/slack"
 )
 
-/*
-   TODO: Change @BOT_NAME to the same thing you entered when creating your Slack application.
-   NOTE: command_arg_1 and command_arg_2 represent optional parameteras that you define
-   in the Slack API UI
-*/
 const helpMessage = `*COMMANDS:*
 "@LyricBot *Query*"
 >*Query* MUST BE the name of a track.`
@@ -83,43 +78,6 @@ func sendHelp(slackClient *slack.RTM, message, slackChannel string) {
 	slackClient.SendMessage(slackClient.NewOutgoingMessage(helpMessage, slackChannel))
 }
 
-//Cat does stuff
-// type Cat struct {
-// 	Text string `json:"text"`
-// }
-
-// func sendCats(slackClient *slack.RTM, message, slackChannel string) {
-// 	command := strings.ToLower(message)
-// 	url := "https://cat-fact.herokuapp.com/facts/random"
-// 	client := http.Client{}
-
-// 	req, err := http.NewRequest(http.MethodGet, url, nil)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	res, getErr := client.Do(req)
-// 	if err != nil {
-// 		log.Fatal(getErr)
-// 	}
-
-// 	defer res.Body.Close()
-
-// 	body, readErr := ioutil.ReadAll(res.Body)
-// 	if readErr != nil {
-// 		log.Fatal(readErr)
-// 	}
-
-// 	cat := &Cat{}
-// 	json.Unmarshal([]byte(body), &cat)
-// 	fmt.Printf("%+v\n", cat)
-// 	// bodyBytes, _ := ioutil.ReadAll(resp.Body)
-// 	// bodyString := string(bodyBytes)
-
-// 	fmt.Println("[RECEIVED] sendCats:", command)
-// 	slackClient.SendMessage(slackClient.NewOutgoingMessage(cat.Text, slackChannel))
-// }
-
 func sendResponse(slackClient *slack.RTM, message, slackChannel string) {
 	musicKey := os.Getenv("KEY")
 	command := strings.ToLower(message)
@@ -148,6 +106,7 @@ func sendResponse(slackClient *slack.RTM, message, slackChannel string) {
 	jsonErr := json.Unmarshal([]byte(body), &musix)
 	if jsonErr != nil {
 		log.Fatal(jsonErr)
+		slackClient.SendMessage(slackClient.NewOutgoingMessage("Try a different song.", slackChannel))
 	}
 
 	// fmt.Printf("%+v\n", musix)
