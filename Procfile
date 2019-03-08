@@ -1,1 +1,1 @@
-web: LyricBot
+web: MusicBot
