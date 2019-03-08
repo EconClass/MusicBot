@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/EconClass/MusicBot)](https://goreportcard.com/report/github.com/EconClass/MusicBot)
 
-DISCLAIMER: This SlackBot is only available for the Product College workspace.
+**DISCLAIMER:** This SlackBot is only available for the Product College workspace.
 
 LyricBot is a SlackBot built in golang and tries its best to look up the lyrics of a song you provide it.
 
