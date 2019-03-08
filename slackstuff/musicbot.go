@@ -120,7 +120,6 @@ func sendHelp(slackClient *slack.RTM, message, slackChannel string) {
 // 	slackClient.SendMessage(slackClient.NewOutgoingMessage(cat.Text, slackChannel))
 // }
 
-// sendResponse is NOT unimplemented --- write code in the function body to complete!
 func sendResponse(slackClient *slack.RTM, message, slackChannel string) {
 	musicKey := os.Getenv("KEY")
 	command := strings.ToLower(message)
