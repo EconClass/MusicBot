@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	musicbot "musicbot/slackstuff"
+	musicbot "github.com/EconClass/MusicBot/slackstuff"
 
 	_ "github.com/joho/godotenv/autoload"
 )
