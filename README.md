@@ -6,7 +6,7 @@ DISCLAIMER: This SlackBot is only available for the Product College workspace.
 
 LyricBot is a SlackBot built in golang and tries its best to look up the lyrics of a song you provide it.
 
-For example if you provide the following query:
+For example if you provide the following query in your Slack interface:
 
 ![alt text](https://github.com/EconClass/MusicBot/blob/master/Screen%20Shot%202019-03-07%20at%208.13.36%20PM.png)
 
